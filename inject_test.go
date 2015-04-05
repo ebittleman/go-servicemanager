@@ -1,6 +1,8 @@
 package servicemanager_test
 
 import (
+	"log"
+	"os"
 	"reflect"
 	"testing"
 
@@ -36,6 +38,17 @@ func Test_GetDependencies(t *testing.T) {
 	assertEquals("FakeDependency2", tags["MyField2"], t)
 
 	// t.Log(tags)
+}
+
+func Test_NonStructSerivce(t *testing.T) {
+	service := map[string]interface{}{
+		"log.writer": os.Stderr,
+		"log.prefix": "example: ",
+		"log.flags":  log.LstdFlags,
+	}
+
+	tags := servicemanager.GetDependencies(service)
+	t.Log(tags)
 }
 
 func Test_InjectDependencies(t *testing.T) {

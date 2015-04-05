@@ -8,12 +8,18 @@ import (
 const INJECT_TAG string = "inject"
 
 func GetDependencies(inst interface{}) map[string]string {
-	val := reflect.ValueOf(inst).Elem()
+	dict := map[string]string{}
+
+	refVal := reflect.ValueOf(inst)
+
+	if refVal.Kind() != reflect.Ptr {
+		return dict
+	}
+
+	val := refVal.Elem()
 	typeOf := val.Type()
 
 	numFields := val.NumField()
-
-	dict := map[string]string{}
 
 	for i := 0; i < numFields; i++ {
 		tag := typeOf.Field(i).Tag
@@ -37,7 +43,13 @@ func InjectDependencies(inst interface{}, fieldValues map[string]interface{}) (i
 		}
 	}()
 
-	val := reflect.ValueOf(inst).Elem()
+	refVal := reflect.ValueOf(inst)
+
+	if refVal.Kind() != reflect.Ptr {
+		return inst, nil
+	}
+
+	val := refVal.Elem()
 
 	for name, fieldValue := range fieldValues {
 
