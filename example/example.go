@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	sm "github.com/ebittleman/go-servicemanager"
+	sm "gopkg.in/ebittleman/go-servicemanager.v0"
 )
 
 type Adder interface {
