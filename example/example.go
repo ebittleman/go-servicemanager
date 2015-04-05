@@ -8,7 +8,7 @@ import (
 	"reflect"
 
 	// sm "github.com/ebittleman/go-servicemanager"
-	sm "gopkg.in/ebittleman/go-servicemanager.v0"
+	sm "gopkg.in/ebittleman/go-servicemanager.v0.0.1"
 )
 
 const LOG_SERVICE = "Log"
