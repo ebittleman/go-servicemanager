@@ -1,3 +1,10 @@
+// This library is created as an experiment to see how a ServiceLocator
+// type pattern holds up in a strictly typed environment. Dependecy Injection
+// and the Factory Pattern are tools that are essential when rapidly building
+// a system with changing requirements. Binding Named services to factories
+// allows us to easily change the concrete implementation of a service and
+// gives us the opportunity to compose and inject any other services registered
+// to the system
 package servicemanager
 
 import "fmt"
@@ -82,14 +89,14 @@ func (s *serviceManager) Get(name string) (inst interface{}, err error) {
 		return nil, err
 	}
 
+	s.instances[name] = inst
+
 	inst, err = s.injectDependencies(inst)
 
 	if err != nil {
 		delete(s.instances, name)
 		return nil, err
 	}
-
-	s.instances[name] = inst
 
 	return inst, nil
 }
@@ -102,16 +109,20 @@ func (s *serviceManager) getCallback(cb ServiceFactoryCallback) (interface{}, er
 	return cb(s)
 }
 
+// Has() looks up if the requested service has been regisitered against the ServiceManager
 func (s *serviceManager) Has(name string) bool {
 	_, ok := s.factories[name]
 
 	return ok
 }
 
+// SetFactory registers a ServiceFactory interface to a named service
 func (s *serviceManager) SetFactory(name string, factory ServiceFactory) error {
 	return s.set(name, factory)
 }
 
+// SetFactory registers a Callback method as a factory to a named service
+// this provides a much lighter weight approach to defining factorys
 func (s *serviceManager) Set(name string, cb ServiceFactoryCallback) error {
 	return s.set(name, cb)
 }

@@ -36,8 +36,6 @@ func Test_GetDependencies(t *testing.T) {
 
 	assertEquals("FakeDependency", tags["MyField"], t)
 	assertEquals("FakeDependency2", tags["MyField2"], t)
-
-	// t.Log(tags)
 }
 
 func Test_NonStructSerivce(t *testing.T) {
@@ -47,8 +45,7 @@ func Test_NonStructSerivce(t *testing.T) {
 		"log.flags":  log.LstdFlags,
 	}
 
-	tags := servicemanager.GetDependencies(service)
-	t.Log(tags)
+	servicemanager.GetDependencies(service)
 }
 
 func Test_InjectDependencies(t *testing.T) {

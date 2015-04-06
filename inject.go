@@ -7,6 +7,8 @@ import (
 
 const INJECT_TAG string = "inject"
 
+// Creates a map where the keys are the field names of the passed struct
+// and the values are named services to be injected into those fields
 func GetDependencies(inst interface{}) map[string]string {
 	dict := map[string]string{}
 
@@ -35,6 +37,9 @@ func GetDependencies(inst interface{}) map[string]string {
 	return dict
 }
 
+// Takes a service instance and injects the map of field names as keys and
+// instantiated services as values. The service locator is specifically left
+// out of this method call so that users can do injections with their own systems
 func InjectDependencies(inst interface{}, fieldValues map[string]interface{}) (instance interface{}, err error) {
 	defer func() {
 		if r := recover(); r != nil {
